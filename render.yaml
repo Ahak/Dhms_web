@@ -1,0 +1,10 @@
+services:
+  - name: dalali-frontend
+    type: static
+    branch: main
+    buildCommand: npm run build
+    publishDir: build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://dalali-backend.onrender.com
+        sync: false
