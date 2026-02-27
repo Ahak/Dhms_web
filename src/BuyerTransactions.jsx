@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from './api';
 import Navbar from './Navbar';
 
 const BuyerTransactions = () => {
@@ -13,7 +13,7 @@ const BuyerTransactions = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/transactions/');
+      const response = await api.get('/api/transactions/');
       setTransactions(response.data);
     } catch (error) {
       console.error('Error fetching buyer transactions', error);
@@ -22,7 +22,7 @@ const BuyerTransactions = () => {
 
   const fetchTotalStats = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/transactions/total/');
+      const response = await api.get('/api/transactions/total/');
       setTotalStats(response.data);
     } catch (error) {
       console.error('Error fetching buyer transaction totals', error);

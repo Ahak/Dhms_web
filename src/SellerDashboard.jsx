@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import api from './api';
 import { AuthContext } from './AuthContext';
 import SellerSidebar from './SellerSidebar';
 import SellerProperties from './SellerProperties';
@@ -67,12 +67,14 @@ const SellerDashboard = () => {
 
     try {
       const [propertiesRes, transactionsRes] = await Promise.all([
-        axios.get('http://localhost:8000/api/properties/'),
-        axios.get('http://localhost:8000/api/transactions/')
+        api.get('/api/properties/'),
+        api.get('/api/transactions/')
       ]);
 
       const sellerProperties = propertiesRes.data.filter((property) => property.seller.id === user.id);
-      const sellerTransactions = transactionsRes.data.filter((transaction) => transaction.seller.id === user.id);
+      const sellerTransactions = transactionsRes.data.filter(
+        (transaction) => transaction.property?.seller?.id === user.id
+      );
       const totalSales = sellerTransactions.reduce(
         (sum, transaction) => sum + Number(transaction.amount || 0),
         0

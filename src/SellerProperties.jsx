@@ -1,15 +1,10 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import axios from 'axios';
+import api, { getImageUrl } from './api';
 import { Modal, Button } from 'react-bootstrap';
 import { AuthContext } from './AuthContext';
 
 const SellerProperties = ({ onUpdated }) => {
-  const buildImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath;
-    const normalizedPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
-    return `http://localhost:8000${normalizedPath}`;
-  };
+  const buildImageUrl = (imagePath) => getImageUrl(imagePath);
 
   const [properties, setProperties] = useState([]);
   const [formData, setFormData] = useState({
@@ -32,7 +27,7 @@ const SellerProperties = ({ onUpdated }) => {
     if (!user?.id) return;
 
     try {
-      const response = await axios.get('http://localhost:8000/api/properties/');
+      const response = await api.get('/api/properties/');
       // Filter out sold properties - only show pending and approved properties
       setProperties(response.data.filter(prop => prop.seller.id === user.id && prop.status !== 'sold'));
     } catch (error) {
@@ -63,12 +58,12 @@ const SellerProperties = ({ onUpdated }) => {
 
     try {
       if (editing) {
-        await axios.put(`http://localhost:8000/api/properties/${editing}/`, data, {
+        await api.put(`/api/properties/${editing}/`, data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         setEditing(null);
       } else {
-        await axios.post('http://localhost:8000/api/properties/', data, {
+        await api.post('/api/properties/', data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
       }
@@ -107,7 +102,7 @@ const SellerProperties = ({ onUpdated }) => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
       try {
-        await axios.delete(`http://localhost:8000/api/properties/${id}/`);
+        await api.delete(`/api/properties/${id}/`);
         fetchProperties();
         if (onUpdated) onUpdated();
       } catch (error) {

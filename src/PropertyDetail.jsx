@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import api, { getImageUrl } from './api';
 import Navbar from './Navbar';
 import Swal from 'sweetalert2';
 
 const PropertyDetail = () => {
-  const API_BASE_URL = 'http://localhost:8000';
   const { id } = useParams();
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,7 +15,7 @@ const PropertyDetail = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/properties/${id}/`);
+        const response = await api.get(`/api/properties/${id}/`);
         setProperty(response.data);
       } catch (error) {
         console.error('Error fetching property', error);
@@ -31,7 +30,7 @@ const PropertyDetail = () => {
   const handlePurchase = async () => {
     try {
       // First, initiate the purchase to create a pending transaction
-      await axios.post(`http://localhost:8000/api/properties/${id}/purchase/`);
+      await api.post(`/api/properties/${id}/purchase/`);
       // Show payment modal
       setPaymentMethod('');
       setShowPaymentModal(true);
@@ -62,7 +61,7 @@ const PropertyDetail = () => {
 
     setProcessingPayment(true);
     try {
-      await axios.post(`http://localhost:8000/api/properties/${id}/process_payment/`, {
+      await api.post(`/api/properties/${id}/process_payment/`, {
         payment_method: paymentMethod
       });
       setShowPaymentModal(false);
@@ -72,7 +71,7 @@ const PropertyDetail = () => {
         text: 'Payment successful! Your purchase is complete.',
       });
       // Refresh property data to show updated status
-      const response = await axios.get(`http://localhost:8000/api/properties/${id}/`);
+      const response = await api.get(`/api/properties/${id}/`);
       setProperty(response.data);
     } catch (error) {
       console.error('Error processing payment', error);
@@ -87,8 +86,7 @@ const PropertyDetail = () => {
   };
 
   const resolveImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    return imagePath.startsWith('http') ? imagePath : `${API_BASE_URL}${imagePath}`;
+    return getImageUrl(imagePath);
   };
 
   if (loading) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import axios from 'axios';
+import api from './api';
 import { AuthContext } from './AuthContext';
 
 const SellerTransactions = () => {
@@ -12,7 +12,7 @@ const SellerTransactions = () => {
 
     try {
       // Backend already filters transactions by seller (property__seller), so we can use data directly
-      const response = await axios.get('http://localhost:8000/api/transactions/');
+      const response = await api.get('/api/transactions/');
       setTransactions(response.data);
     } catch (error) {
       console.error('Error fetching transactions', error);
@@ -23,7 +23,7 @@ const SellerTransactions = () => {
     if (!user?.id) return;
 
     try {
-      const response = await axios.get('http://localhost:8000/api/transactions/total/');
+      const response = await api.get('/api/transactions/total/');
       setTotalStats(response.data);
     } catch (error) {
       console.error('Error fetching total stats', error);

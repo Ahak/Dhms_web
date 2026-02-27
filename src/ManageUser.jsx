@@ -1,16 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api, { getImageUrl } from './api';
 import { AuthContext } from './AuthContext';
 import Sidebar from './Sidebar';
 import Swal from 'sweetalert2';
 
 const ManageUser = () => {
-  const buildImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath;
-    const normalizedPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
-    return `http://localhost:8000${normalizedPath}`;
-  };
+  const buildImageUrl = (imagePath) => getImageUrl(imagePath);
 
   const [users, setUsers] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -33,7 +28,7 @@ const ManageUser = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/users/');
+      const response = await api.get('/api/users/');
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users', error);
@@ -43,7 +38,7 @@ const ManageUser = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        await axios.delete(`http://localhost:8000/api/users/${id}/`);
+        await api.delete(`/api/users/${id}/`);
         Swal.fire({
           icon: 'success',
           title: 'Success',
@@ -97,7 +92,7 @@ const ManageUser = () => {
     });
     try {
       if (editingUser) {
-        await axios.patch(`http://localhost:8000/api/users/${editingUser.id}/`, data, {
+        await api.patch(`/api/users/${editingUser.id}/`, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -108,7 +103,7 @@ const ManageUser = () => {
           text: 'User updated successfully.',
         });
       } else {
-        await axios.post('http://localhost:8000/api/users/', data, {
+        await api.post('/api/users/', data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

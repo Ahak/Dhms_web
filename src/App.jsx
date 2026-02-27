@@ -34,21 +34,24 @@ function App() {
 }
 
 const PrivateRoute = ({ children }) => {
-  const { token } = React.useContext(AuthContext);
+  const { token, authLoading } = React.useContext(AuthContext);
+  if (authLoading) return null;
   return token ? children : <Navigate to="/login" />;
 };
 
 const AdminRoute = ({ children }) => {
-  const { token, user } = React.useContext(AuthContext);
+  const { token, user, authLoading } = React.useContext(AuthContext);
+  if (authLoading) return null;
   if (!token) return <Navigate to="/login" />;
-  if (user && user.role !== 'admin') return <Navigate to="/dashboard" />;
+  if (!user || user.role !== 'admin') return <Navigate to="/dashboard" />;
   return children;
 };
 
 const BuyerRoute = ({ children }) => {
-  const { token, user } = React.useContext(AuthContext);
+  const { token, user, authLoading } = React.useContext(AuthContext);
+  if (authLoading) return null;
   if (!token) return <Navigate to="/login" />;
-  if (user && user.role !== 'buyer') return <Navigate to="/dashboard" />;
+  if (!user || user.role !== 'buyer') return <Navigate to="/dashboard" />;
   return children;
 };
 

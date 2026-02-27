@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api, { getImageUrl } from './api';
 import { AuthContext } from './AuthContext';
 import Sidebar from './Sidebar';
 import Swal from 'sweetalert2';
 
 const ManageProperty = () => {
-  const API_BASE_URL = 'http://localhost:8000';
   const [properties, setProperties] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editingProperty, setEditingProperty] = useState(null);
@@ -30,7 +29,7 @@ const ManageProperty = () => {
 
   const fetchProperties = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/properties/');
+      const response = await api.get('/api/properties/');
       setProperties(response.data);
     } catch (error) {
       console.error('Error fetching properties', error);
@@ -39,7 +38,7 @@ const ManageProperty = () => {
 
   const handleApprove = async (id) => {
     try {
-      await axios.post(`http://localhost:8000/api/properties/${id}/approve/`);
+      await api.post(`/api/properties/${id}/approve/`);
       Swal.fire({
         icon: 'success',
         title: 'Success',
@@ -59,7 +58,7 @@ const ManageProperty = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
       try {
-        await axios.delete(`http://localhost:8000/api/properties/${id}/`);
+        await api.delete(`/api/properties/${id}/`);
         Swal.fire({
           icon: 'success',
           title: 'Success',
@@ -111,16 +110,27 @@ const ManageProperty = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== null && formData[key] !== '') {
+        data.append(key, formData[key]);
+      }
+    });
+
     try {
       if (editingProperty) {
-        await axios.patch(`http://localhost:8000/api/properties/${editingProperty.id}/`, formData);
+        await api.patch(`/api/properties/${editingProperty.id}/`, data, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
         Swal.fire({
           icon: 'success',
           title: 'Success',
           text: 'Property updated successfully.',
         });
       } else {
-        await axios.post('http://localhost:8000/api/properties/', formData);
+        await api.post('/api/properties/', data, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
         Swal.fire({
           icon: 'success',
           title: 'Success',
@@ -145,8 +155,7 @@ const ManageProperty = () => {
   };
 
   const resolveImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    return imagePath.startsWith('http') ? imagePath : `${API_BASE_URL}${imagePath}`;
+    return getImageUrl(imagePath);
   };
 
   if (user && user.role !== 'admin') {

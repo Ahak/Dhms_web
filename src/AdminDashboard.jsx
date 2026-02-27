@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from './api';
 import Sidebar from './Sidebar';
 import Swal from 'sweetalert2';
 
@@ -20,7 +20,7 @@ const AdminDashboard = () => {
 
   const fetchProperties = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/properties/?status=pending');
+      const response = await api.get('/api/properties/?status=pending');
       setProperties(response.data);
     } catch (error) {
       console.error('Error fetching properties', error);
@@ -30,9 +30,9 @@ const AdminDashboard = () => {
   const fetchStats = async () => {
     try {
       const [usersRes, propertiesRes, transactionsRes] = await Promise.all([
-        axios.get('http://localhost:8000/api/users/'),
-        axios.get('http://localhost:8000/api/properties/'),
-        axios.get('http://localhost:8000/api/transactions/')
+        api.get('/api/users/'),
+        api.get('/api/properties/'),
+        api.get('/api/transactions/')
       ]);
 
       const users = usersRes.data;
@@ -113,7 +113,7 @@ const AdminDashboard = () => {
 
   const handleApprove = async (id) => {
     try {
-      await axios.post(`http://localhost:8000/api/properties/${id}/approve/`);
+      await api.post(`/api/properties/${id}/approve/`);
       Swal.fire({
         icon: 'success',
         title: 'Success',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from './api';
 import { AuthContext } from './AuthContext';
 import Sidebar from './Sidebar';
 import Swal from 'sweetalert2';
@@ -28,7 +28,7 @@ const ManageTransaction = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/transactions/');
+      const response = await api.get('/api/transactions/');
       setTransactions(response.data);
     } catch (error) {
       console.error('Error fetching transactions', error);
@@ -37,7 +37,7 @@ const ManageTransaction = () => {
 
   const fetchProperties = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/properties/');
+      const response = await api.get('/api/properties/');
       setProperties(response.data);
     } catch (error) {
       console.error('Error fetching properties', error);
@@ -46,7 +46,7 @@ const ManageTransaction = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/users/');
+      const response = await api.get('/api/users/');
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users', error);
@@ -56,7 +56,7 @@ const ManageTransaction = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this transaction?')) {
       try {
-        await axios.delete(`http://localhost:8000/api/transactions/${id}/`);
+        await api.delete(`/api/transactions/${id}/`);
         Swal.fire({
           icon: 'success',
           title: 'Success',
@@ -100,14 +100,14 @@ const ManageTransaction = () => {
     e.preventDefault();
     try {
       if (editingTransaction) {
-        await axios.patch(`http://localhost:8000/api/transactions/${editingTransaction.id}/`, formData);
+        await api.patch(`/api/transactions/${editingTransaction.id}/`, formData);
         Swal.fire({
           icon: 'success',
           title: 'Success',
           text: 'Transaction updated successfully.',
         });
       } else {
-        await axios.post('http://localhost:8000/api/transactions/', formData);
+        await api.post('/api/transactions/', formData);
         Swal.fire({
           icon: 'success',
           title: 'Success',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api, { getImageUrl } from './api';
 import Navbar from './Navbar';
 import Swal from 'sweetalert2';
 
@@ -13,7 +13,7 @@ const BuyerDashboard = () => {
 
   const fetchProperties = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/properties/?status=approved');
+      const response = await api.get('/api/properties/?status=approved');
       setProperties(response.data);
     } catch (error) {
       console.error('Error fetching properties', error);
@@ -33,7 +33,7 @@ const BuyerDashboard = () => {
               <div className="card" style={{ width: '15rem' }}>
                 {property.image1 ? (
   <img
-    src={property.image1.startsWith('http') ? property.image1 : `http://localhost:8000${property.image1}`}
+    src={getImageUrl(property.image1)}
     className="card-img-top"
     alt={property.title}
     style={{ height: '200px', objectFit: 'cover' }}

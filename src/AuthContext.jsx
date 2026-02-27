@@ -6,11 +6,32 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    if (token) {
+    const initializeAuth = async () => {
+      if (!token) {
+        delete api.defaults.headers.common['Authorization'];
+        setUser(null);
+        setAuthLoading(false);
+        return;
+      }
+
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    }
+      try {
+        const userResponse = await api.get('/api/users/me/');
+        setUser(userResponse.data);
+      } catch (error) {
+        localStorage.removeItem('token');
+        setToken(null);
+        setUser(null);
+        delete api.defaults.headers.common['Authorization'];
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+
+    initializeAuth();
   }, [token]);
 
   const login = async (username, password) => {
@@ -44,11 +65,12 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     setToken(null);
     setUser(null);
+    setAuthLoading(false);
     delete api.defaults.headers.common['Authorization'];
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, authLoading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
