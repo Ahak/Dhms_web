@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 const isDevelopment = import.meta.env.MODE === 'development'
-const MyBaseUrl = isDevelopment ? import.meta.env.REACT_APP_API_URL : import.meta.env.RENDER_EXTERNAL_HOSTNAME
+const MyBaseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_DEPLOY
 
 // Create axios instance with base URL
 const api = axios.create({
