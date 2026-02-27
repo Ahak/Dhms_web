@@ -9,4 +9,4 @@ npm ci --legacy-peer-deps
 echo "Building React frontend..."
 npm run build
 
-echo "Build complete. Output in 'build' directory."
+echo "Build complete. Output in 'dist' directory."
