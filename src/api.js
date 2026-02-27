@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-// Use environment variable for API URL, default to localhost for development
-export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
+const isDevelopment = import.meta.env.MODE === 'development'
+const MyBaseUrl = isDevelopment ? import.meta.env.REACT_APP_API_URL : import.meta.env.RENDER_EXTERNAL_HOSTNAME
 
 // Create axios instance with base URL
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: MyBaseUrl,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -28,7 +29,7 @@ export const getImageUrl = (imagePath) => {
   if (!imagePath) return '';
   if (imagePath.startsWith('http')) return imagePath;
   const normalizedPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
-  return `${API_BASE_URL}${normalizedPath}`;
+  return `${MyBaseUrl}${normalizedPath}`;
 };
 
 export default api;
