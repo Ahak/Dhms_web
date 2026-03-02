@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+## Project Description
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Dalali House Management System is a web-based application designed to connect property owners (sellers) directly with buyers. The system simplifies property listing, management, and purchasing by acting as a trusted middleman (Dalali) between sellers and buyers.
+Users can register and log in to the system. Sellers are able to add, manage, update, and delete property listings, as well as view payment information. Buyers can browse available properties and purchase them through the platform.
+Before any property is visible to buyers, it must be reviewed and approved by the system administrator (Dalali). This approval process ensures property authenticity, security, and trust within the platform.
 
-## Available Scripts
+## Technologies Used
 
-In the project directory, you can run:
++Frontend
+React
 
-### `npm start`
++Backend :Django (Python)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
++IDE  Visual Studio Code
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
++Deployment: Render 
 
-### `npm test`
+## Deployment Link
++BAckend
+https://dalalihousesystem.onrender.com/
++Frontend
+https://dhms-web.onrender.com
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Instructions to Run Locally
+# Backend (Django)
+1. Open the project folder using Command Prompt (CMD) or Terminal
+2. Create a virtual environment:
+   python -m venv .env
+3. Activate the virtual environment:
+   .env\Scripts\activate
 
-### `npm run build`
+4. change directory
+   cd Backend
+5. Run the development server:
+   python manage.py runserver
+6. Open your browser and visit:
+   http://127.0.0.1:8000/
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Fontend 
+1. Open terminale
+2. Change directory
+   cd frontend
+3. Run Server 
+   npm start
